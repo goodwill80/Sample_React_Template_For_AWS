@@ -1,8 +1,8 @@
-import { SignInOutput, fetchAuthSession, signIn } from "@aws-amplify/auth";
-import { Amplify } from "aws-amplify";
-import { AuthStack } from "../../../AWS_CDK_STARTER_API/outputs.json";
-import { CognitoIdentityClient } from "@aws-sdk/client-cognito-identity";
-import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
+import { SignInOutput, fetchAuthSession, signIn } from '@aws-amplify/auth';
+import { Amplify } from 'aws-amplify';
+import { AuthStack } from '../../../cdk-starter-api/outputs.json';
+import { CognitoIdentityClient } from '@aws-sdk/client-cognito-identity';
+import { fromCognitoIdentityPool } from '@aws-sdk/credential-providers';
 
 // Initialise Amplify API to communicate with AWS cognito - by passing in userPoolID and userIdentityPoolId
 Amplify.configure({
@@ -15,7 +15,7 @@ Amplify.configure({
   },
 });
 
-const awsRegion = "ap-southeast-1";
+const awsRegion = 'ap-southeast-1';
 
 export class AuthService {
   private user: string | undefined;
@@ -33,14 +33,14 @@ export class AuthService {
         username,
         password,
         options: {
-          authFlowType: "USER_PASSWORD_AUTH",
+          authFlowType: 'USER_PASSWORD_AUTH',
         },
       })) as SignInOutput;
       // Get user details from session
       const session = await fetchAuthSession();
       const { idToken } = session.tokens ?? {};
       const token = idToken?.toString();
-      if (token !== "") {
+      if (token !== '') {
         this.jwtToken = token as string;
         const credentials = await this.getTemporaryCredentials();
         console.log(credentials);
