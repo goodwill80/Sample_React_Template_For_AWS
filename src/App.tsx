@@ -1,11 +1,14 @@
-import './App.css';
-import { useState } from 'react';
-import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
-import NavBar from './components/NavBar';
-import { LoginComponent } from './components/LoginComponent';
-import { AuthService } from './services/AuthService';
+import "./App.css";
+import { useState } from "react";
+import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
+import NavBar from "./components/NavBar";
+import { LoginComponent } from "./components/LoginComponent";
+import { AuthService } from "./services/AuthService";
+import { DataService } from "./services/DataService";
+import CreateSpace from "./components/spaces/createSpace";
 
 const authService = new AuthService();
+const dataService = new DataService();
 
 function App() {
   const [username, setUsername] = useState<string | undefined>(undefined);
@@ -18,9 +21,9 @@ function App() {
         </>
       ),
       children: [
-        { path: '/', element: <div>Home page</div> },
+        { path: "/", element: <div>Home page</div> },
         {
-          path: '/login',
+          path: "/login",
           element: (
             <LoginComponent
               authService={authService}
@@ -28,9 +31,12 @@ function App() {
             />
           ),
         },
-        { path: '/profile', element: <div>Profile Page</div> },
-        { path: '/createSpace', element: <div>Create Space Page</div> },
-        { path: '/spaces', element: <div>Spaces Page</div> },
+        { path: "/profile", element: <div>Profile Page</div> },
+        {
+          path: "/createSpace",
+          element: <CreateSpace dataService={dataService} />,
+        },
+        { path: "/spaces", element: <div>Spaces Page</div> },
       ],
     },
   ]);

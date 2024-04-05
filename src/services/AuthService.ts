@@ -19,21 +19,26 @@ export class AuthService {
     username: string,
     password: string
   ): Promise<object | undefined> {
-    // Sign in
-    const result = (await signIn({
-      username,
-      password,
-      options: {
-        authFlowType: "USER_PASSWORD_AUTH",
-      },
-    })) as SignInOutput;
-    // Get user details from session
-    const session = await fetchAuthSession();
+    try {
+      // Sign in
+      const result = (await signIn({
+        username,
+        password,
+        options: {
+          authFlowType: "USER_PASSWORD_AUTH",
+        },
+      })) as SignInOutput;
+      // Get user details from session
+      const session = await fetchAuthSession();
 
-    if (session.tokens?.signInDetails?.loginId) {
-      this.user = session.tokens?.signInDetails?.loginId as string;
+      if (session.tokens?.signInDetails?.loginId) {
+        this.user = session.tokens?.signInDetails?.loginId as string;
+      }
+      return result;
+    } catch (error) {
+      console.error(error);
+      return undefined;
     }
-    return result;
   }
 
   public getUserName() {
